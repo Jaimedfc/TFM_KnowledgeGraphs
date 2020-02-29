@@ -1,0 +1,30 @@
+WARNING - From /home/jaime/.local/lib/python3.6/site-packages/ampligraph/latent_features/models/EmbeddingModel.py:196: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+
+WARNING - From /home/jaime/.local/lib/python3.6/site-packages/ampligraph/latent_features/models/EmbeddingModel.py:199: The name tf.random.set_random_seed is deprecated. Please use tf.compat.v1.random.set_random_seed instead.
+
+INFO - 
+--------- Loss ---------
+INFO - Name : multiclass_nll
+INFO - eta : 20
+INFO - 
+------ Regularizer -----
+INFO - Name : LP
+INFO - lambda : 1e-05
+INFO - p : 3
+INFO - 
+------ Optimizer -----
+INFO - Name : adam
+INFO - lr : 0.0001
+INFO - 
+------ Initializer -----
+INFO - Name : xavier
+INFO - uniform : False
+WARNING - From /home/jaime/.local/lib/python3.6/site-packages/ampligraph/latent_features/models/EmbeddingModel.py:261: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING - From trainKGModel.py:68: The name tf.logging.set_verbosity is deprecated. Please use tf.compat.v1.logging.set_verbosity instead.
+
+WARNING - From trainKGModel.py:68: The name tf.logging.ERROR is deprecated. Please use tf.compat.v1.logging.ERROR instead.
+
+WARNING - Your graph has a large number of distinct entities. Found 4708756 distinct entities
+WARNING - Changing the variable initialization strategy.
+WARNING - Changing the strategy to use lazy loading of variables...

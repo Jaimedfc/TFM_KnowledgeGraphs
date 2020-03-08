@@ -3,5 +3,5 @@ import pandas as pd
 
 df = pd.read_pickle("../Data/cleanDataset.pkl")
 
-unused, df = train_test_split(df, test_size=0.2)
-df.to_pickle("../Data/reducedDataset.pkl")
+unused, df = train_test_split(df, test_size=0.01)
+df.to_pickle("../Data/reducedDataset01.pkl")

@@ -1,9 +1,9 @@
 // The simplest possible sbt build file is just one line:
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.11.7"
 // That is, to create a valid sbt build, all you've got to do is define the
 // version of Scala you'd like your project to use.
-
+val sparkVersion = "2.4.4"
 // ============================================================================
 
 // Lines like the above defining `scalaVersion` are called "settings". Settings
@@ -12,18 +12,27 @@ scalaVersion := "2.13.1"
 
 // It's possible to define many kinds of settings, such as:
 
-name := "hello-world"
-organization := "ch.epfl.scala"
+name := "Classification"
 version := "1.0"
 
 // Note, it's not required for you to define these three settings. These are
 // mostly only necessary if you intend to publish your library's binaries on a
 // place like Sonatype or Bintray.
 
+mainClass in Compile := Some("scala.Classification")
 
+resolvers ++= Seq(
+  "apache-snapshots" at "https://repository.apache.org/snapshots/"
+)
 // Want to use a published library in your project?
 // You can define other libraries as dependencies in your build like this:
-libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-core" % sparkVersion,
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.apache.spark" %% "spark-mllib" % sparkVersion,
+  "org.apache.spark" %% "spark-streaming" % sparkVersion,
+  "org.apache.spark" %% "spark-sql-kafka-0-10" % "2.4.0"
+)
 // Here, `libraryDependencies` is a set of dependencies, and by using `+=`,
 // we're adding the cats dependency to the set of dependencies that sbt will go
 // and fetch when it starts up.

@@ -13,9 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+/*app.get('/', (req, res) => {
+  res.sendFile("public/index.html");
+});*/
 app.use('/api', require('./routes/dato'));
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');

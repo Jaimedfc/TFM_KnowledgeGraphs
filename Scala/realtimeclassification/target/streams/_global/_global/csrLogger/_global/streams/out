@@ -1,4 +1,5 @@
-[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/modules/scala-pickling_2.11/0.10.1/scala-pickling_2.11-0.10.1.pom
-[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/modules/scala-pickling_2.11/0.10.1/scala-pickling_2.11-0.10.1.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/modules/scala-pickling_2.11/0.10.1/scala-pickling_2.11-0.10.1-sources.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/modules/scala-pickling_2.11/0.10.1/scala-pickling_2.11-0.10.1-javadoc.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.4/spark-sql-kafka-0-10_2.11-2.4.4.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.4/spark-sql-kafka-0-10_2.11-2.4.4.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.4/spark-sql-kafka-0-10_2.11-2.4.4-sources.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.4/spark-sql-kafka-0-10_2.11-2.4.4-javadoc.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.4.4/spark-sql-kafka-0-10_2.11-2.4.4-javadoc.jar.sha1

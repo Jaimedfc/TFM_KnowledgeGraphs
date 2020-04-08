@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: aopalliance:aopalliance:1.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4:jar" level="project" />
     <orderEntry type="module-library">
       <library name="sbt: unmanaged-sources-and-docs">
         <CLASSES />
@@ -85,7 +86,6 @@
     <orderEntry type="library" name="sbt: org.apache.spark:spark-tags_2.11:2.4.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.spark:spark-streaming_2.11:2.4.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.spark:spark-sql_2.11:2.4.4:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.spark:spark-sketch_2.11:2.4.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.spark:spark-network-shuffle_2.11:2.4.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.spark:spark-network-common_2.11:2.4.4:jar" level="project" />

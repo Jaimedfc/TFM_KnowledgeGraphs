@@ -65,7 +65,7 @@
 </template>
  
 <script>
-const url = process.env.URL_EXPRESS || "http://localhost:3000";
+const url = process.env.VUE_APP_API || "http://localhost:3000";
 const API_URL = url + '/api/dato';
  
 export default {
@@ -111,13 +111,14 @@ export default {
     },
     onReset() {
         // Reset our form values
-        this.dato.sujeto = ''
-        this.dato.datoID = ''
-        this.dato.ECG = ''
-        this.dato.EMG = ''
-        this.dato.EDA = ''
-        this.dato.TEMP = ''
-        this.dato.RESP = ''
+        this.dato.sujeto = '';
+        this.dato.datoID = '';
+        this.dato.ECG = '';
+        this.dato.EMG = '';
+        this.dato.EDA = '';
+        this.dato.TEMP = '';
+        this.dato.RESP = '';
+        this.showLink = false;
       }
   },
   computed:{

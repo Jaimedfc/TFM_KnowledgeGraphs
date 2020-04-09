@@ -25,15 +25,17 @@ router.post('/dato', async(req, res) => {
         'RESP': body.RESP,
         'sujeto': body.sujeto
     }
+    console.log(dato);
     // conf kafka
-    const urlKafka = process.env.URL_KAFKA || 'localhost:9092';
+    let urlKafka = process.env.KAFKA_URI || 'localhost';
+    urlKafka = urlKafka+':9092';
+    console.log(urlKafka);
     //console.log(process.env);
     var client = new kafka.KafkaClient({kafkaHost: urlKafka});
     var producer = new kafka.Producer(client);
     
-    //console.log(dato);
-    //TODO ENVIAR A KAFKA
-    var payloads = [{ topic: 'myTopic', messages: [dato], partition: 0 }];
+    
+    var payloads = [{ topic: 'myTopic', messages: JSON.stringify(dato), partition: 0 }];
     producer.on('ready', function () {
       producer.send(payloads, function (err, data) {
           console.log('TODO SALIO A PEDIR DE MILHOUSE');

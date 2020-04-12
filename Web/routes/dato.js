@@ -18,11 +18,11 @@ router.post('/dato', async(req, res) => {
   try {
     const dato = {
         'datoID': body.datoID,
-        'ECG': body.ECG,
-        'EMG': body.EMG,
-        'EDA': body.EDA,
-        'TEMP': body.TEMP,
-        'RESP': body.RESP,
+        'ECG': parseFloat(body.ECG),
+        'EMG': parseFloat(body.EMG),
+        'EDA': parseFloat(body.EDA),
+        'TEMP': parseFloat(body.TEMP),
+        'RESP': parseFloat(body.RESP),
         'sujeto': body.sujeto
     }
     console.log(dato);

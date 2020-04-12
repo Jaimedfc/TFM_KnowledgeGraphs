@@ -1,7 +1,7 @@
+import org.apache.spark.ml.PipelineModel
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types.{DataTypes, StructType}
-import org.pmml4s.spark.ScoreModel
 import org.apache.spark.sql.functions.from_json
+import org.apache.spark.sql.types.{DataTypes, StructType}
 //import org.apache.spark.sql.functions.from_json
 object Classification{
 
@@ -16,18 +16,16 @@ object Classification{
     //import spark.implicits._
     import spark.implicits._
 
-    //Recuperar diccionario con la transformación de dimension del KG
-    //Clave es el ID del conjunto de datos y el valor un array de valores tipo double
     val base_path= "/media/jaime/tocho/Universidad/Master/TFM/TFM_KnowledgeGraphs"
-    //val embeddingDict = "%s/Data/EmbeddingsDict.json".format(base_path)
-    val embeddingDict = "%s/Data/EmbeddingsDict.csv".format(base_path)
-    val myDict = spark.read
+    val randomForestModelPath = "%s/Data/pySparkRFModel".format(base_path)
+    val rfc = PipelineModel.load(randomForestModelPath)
+    /*val myDict = spark.read
       .format("csv")
       .option("header", "true")
       .option("mode", "DROPMALFORMED")
       .option("inferSchema", "true")
       .option("maxColumns", 1000000)
-      .load(embeddingDict)
+      .load(embeddingDict)*/
     //println(myDict.select("Dato25739778").collectAsList())
     //println(myDict.select("Dato25739778").collect().map(_(0)).toList)
 
@@ -52,8 +50,7 @@ object Classification{
       .add("RESP", DataTypes.DoubleType)
       .add("sujeto", DataTypes.StringType)
 
-    //val dataNestedDf = dataJsonDf.select(from_json(df.col("value").cast(string), struct).as("dato"))
-    //val dataNestedDf = dataJsonDf.select(from_json(dataJsonDf("value"),struct))
+
     val dataNestedDf = dataJsonDf.select(from_json($"value", struct).as("dato"))
 
     dataNestedDf.printSchema()
@@ -63,14 +60,12 @@ object Classification{
       "dato.RESP","dato.sujeto")
     dataFlattenedDf.printSchema()
 
-    //Cargar modelo
-    val modelPath = "%s/Data/ClassificationModelPipelineGBTree035.pmml".format(base_path)
-    val model = ScoreModel.fromFile(modelPath)
-    //val myArray = dataFlattenedDf.select("datoId").
-    val scoreDf = model.transform(myArray)
+    val features = dataFlattenedDf.drop("datoID").drop("sujeto")
+
+    val predictions = rfc.transform(features)
 
 
-    val consoleOutput = scoreDf
+    val consoleOutput = predictions
       .writeStream
       .outputMode("append")
       .format("console")

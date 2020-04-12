@@ -4,4 +4,4 @@ import pandas as pd
 df = pd.read_pickle("../Data/cleanDataset.pkl")
 
 unused, df = train_test_split(df, test_size=0.001)
-df.to_pickle("../Data/reducedDataset001.pkl")
+df.to_csv("../Data/reducedDataset001.csv", index = False)

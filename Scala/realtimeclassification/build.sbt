@@ -22,7 +22,9 @@ version := "1.0"
 mainClass in Compile := Some("scala.Classification")
 
 resolvers ++= Seq(
-  "apache-snapshots" at "https://repository.apache.org/snapshots/"
+  "apache-snapshots" at "https://repository.apache.org/snapshots/",
+  "anormcypher" at "http://repo.anormcypher.org/",
+  "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
 )
 // Want to use a published library in your project?
 // You can define other libraries as dependencies in your build like this:
@@ -31,7 +33,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   "org.apache.spark" %% "spark-mllib" % sparkVersion,
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
-  "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion
+  "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion,
+  "org.anormcypher" %% "anormcypher" % "0.10.0"
 )
 // Here, `libraryDependencies` is a set of dependencies, and by using `+=`,
 // we're adding the cats dependency to the set of dependencies that sbt will go

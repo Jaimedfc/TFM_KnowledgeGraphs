@@ -58,7 +58,7 @@
         <p class="mb-0">{{error}}</p>
     </div>
     <b-row v-if="showLink">
-        <h4><b-link v-bind:to="resultURL">Ver resultado del dato {{dato.datoID}}</b-link></h4>
+        <h4><b-link v-bind:to="resultURL">Ver resultado del sujeto {{dato.sujeto}}</b-link></h4>
       </b-row>
     </b-container>
   </div>
@@ -123,7 +123,7 @@ export default {
   },
   computed:{
     resultURL: function () {
-      return "/data/"+this.dato.datoID;
+      return "/data/"+this.dato.sujeto;
     }
   }
 };

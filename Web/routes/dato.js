@@ -1,5 +1,6 @@
 import express from 'express';
 var kafka = require('kafka-node');
+const neo4j = require('neo4j-driver')
 const router = express.Router();
 
 //payload scheme:
@@ -58,8 +59,30 @@ router.post('/dato', async(req, res) => {
 // Get con parámetros
 router.get('/dato/:id', async(req, res) => {
     const _id = req.params.id;
+    let urineo = process.env.NEO_URI || 'localhost';
+    urineo = urineo + ':7474'
     try {
       //const dato = COGERDENEO4J
+
+      const driver = neo4j.driver(urineo, neo4j.auth.basic('', ''));
+      const session = driver.session();
+
+      try {
+        const result = await session.run(
+          'MATCH (a:Sujeto {value: $val})--[:ISPRODUCEDBY]--(d:Id)--(x) RETURN a AS sujeto, d.value AS id, x AS data',
+          { val: _id }
+        );
+        
+        const singleRecord = result.records[0];
+        const sujeto = singleRecord.get('sujeto');
+        const dataID = singleRecord.get('id');
+        const data = singleRecord.get('data');
+        console.log("SUJETO", sujeto);
+        console.log("DATAID", dataID);
+        console.log("DATA", data);
+      } finally {
+        await session.close();
+      }
       res.status(200).json({'msg': 'TODO OK', 'dato': _id});
     } catch (error) {
       return res.status(400).json({

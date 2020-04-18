@@ -18,7 +18,6 @@ router.post('/dato', async(req, res) => {
   const body = req.body;  
   try {
     const dato = {
-        'datoID': body.datoID,
         'ECG': parseFloat(body.ECG),
         'EMG': parseFloat(body.EMG),
         'EDA': parseFloat(body.EDA),

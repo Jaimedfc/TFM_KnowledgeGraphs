@@ -3,13 +3,6 @@
     <b-container fluid class='text-left'>
     <h2>Por favor, rellene el siguiente formulario:</h2>
     <b-form @submit.prevent="addDato" @reset.prevent="onReset" class='left-align'>
-      <b-form-group label='ID de los datos:' label-for="datoID">
-        <b-form-input
-          v-model="dato.datoID"
-          type="text"
-          id="datoID"
-          required></b-form-input>
-      </b-form-group>
       <b-form-group label='Sujeto:' label-for="sujeto" description="Introducir un valor anonimizado. Ej. 'S15'">
         <b-form-input
           v-model="dato.sujeto"
@@ -73,7 +66,6 @@ export default {
   data: () => ({
     error: "",
     dato: {
-      datoID: "",
       sujeto: "",
       ECG: "",
       EMG: "",
@@ -112,7 +104,6 @@ export default {
     onReset() {
         // Reset our form values
         this.dato.sujeto = '';
-        this.dato.datoID = '';
         this.dato.ECG = '';
         this.dato.EMG = '';
         this.dato.EDA = '';

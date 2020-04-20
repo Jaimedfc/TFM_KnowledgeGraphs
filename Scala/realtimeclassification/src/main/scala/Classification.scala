@@ -2,8 +2,8 @@ import org.apache.spark.ml.PipelineModel
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions.from_json
 import org.apache.spark.sql.types.{DataTypes, StructType}
+import org.neo4j.spark.Neo4jConfig
 import org.neo4j.spark.dataframe.Neo4jDataFrame
-//import org.apache.spark.sql.functions.from_json
 object Classification{
 
   def main(args: Array[String]): Unit = {
@@ -13,10 +13,13 @@ object Classification{
     val neoURI = "localhost" //dev
     val spark = SparkSession
       .builder
+      .config(Neo4jConfig.prefix + "url", "bolt://"+neoURI)
+      .config(Neo4jConfig.prefix + "user", "neo4j")
+      .config(Neo4jConfig.prefix + "password", "test")
       .appName("StressClassification")
       .master("local[*]")
       .getOrCreate()
-    spark.conf.set("spark.neo4j.bolt.url", "bolt://"+neoURI+":7687")
+    val sc = spark.sparkContext
     //import spark.implicits._
     import spark.implicits._
 
@@ -54,30 +57,31 @@ object Classification{
     dataFlattenedDf.printSchema()
 
 
-    val features = dataFlattenedDf.drop("sujeto")
     val predictions = rfc.transform(dataFlattenedDf).drop("features").drop("rawPrediction").drop("probability")
+    import org.apache.spark.sql.functions._
+    val finalPred = predictions.withColumn("label", when($"prediction" === 1,"Baseline").when($"prediction" === 2,"Stressed")
+    .when($"prediction" === 3,"Amusement").otherwise("Meditation"))
 
-    predictions.writeStream.foreachBatch{
+
+    finalPred.writeStream.foreachBatch{
       (batchDF: DataFrame, batchId: Long) =>
-        if (batchDF("prediction") == 1){
-          Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("Subject",Seq("sujeto")),("HAS_STATUS",Seq()),("Baseline",Seq()) )
-        }else if(batchDF("prediction") == 2){
-          Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("Subject",Seq("sujeto")),("HAS_STATUS",Seq()),("Stressed",Seq()) )
-        }else if(batchDF("prediction") == 3){
-          Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("Subject",Seq("sujeto")),("HAS_STATUS",Seq()),("Amusement",Seq()) )
-        }else{
-          Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("Subject",Seq("sujeto")),("HAS_STATUS",Seq()),("Mediatation",Seq()) )
-        }
-        Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("ECGData",Seq("ECG")),("IS_ECG_DATA_IN",Seq()),("Subject",Seq("sujeto")) )
-        Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("EMGData",Seq("EMG")),("IS_EMG_DATA_IN",Seq()),("Subject",Seq("sujeto")) )
-        Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("EDAData",Seq("EDA")),("IS_EDA_DATA_IN",Seq()),("Subject",Seq("sujeto")) )
-        Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("TEMPData",Seq("TEMP")),("IS_TEMP_DATA_IN",Seq()),("Subject",Seq("sujeto")) )
-        Neo4jDataFrame.mergeEdgeList(spark.sparkContext,batchDF,("RESPData",Seq("RESP")),("IS_RESP_DATA_IN",Seq()),("Subject",Seq("sujeto")) )
-
+        Neo4jDataFrame.createNodes(sc,batchDF,("Subject",Seq("sujeto")),Map("sujeto" -> "val"))
+        Neo4jDataFrame.createNodes(sc,batchDF,("ECGData",Seq("ECG")),Map("ECG" -> "val"))
+        Neo4jDataFrame.createNodes(sc,batchDF,("EMGData",Seq("EMG")),Map("EMG" -> "val"))
+        Neo4jDataFrame.createNodes(sc,batchDF,("EDAData",Seq("EDA")),Map("EDA" -> "val"))
+        Neo4jDataFrame.createNodes(sc,batchDF,("TEMPData",Seq("TEMP")),Map("TEMP" -> "val"))
+        Neo4jDataFrame.createNodes(sc,batchDF,("RESPData",Seq("RESP")),Map("RESP" -> "val"))
+        Neo4jDataFrame.createNodes(sc,batchDF,("Status",Seq("label")),Map("label"->"val"))
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("Subject",Seq("sujeto")),("HAS_STATUS",Seq()),("Status",Seq("label")),Map("sujeto"->"val", "label"->"val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("ECGData",Seq("ECG")),("IS_ECG_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("ECG" -> "val", "sujeto"->"val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("EMGData",Seq("EMG")),("IS_EMG_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("EMG" -> "val", "sujeto"->"val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("EDAData",Seq("EDA")),("IS_EDA_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("EDA" -> "val", "sujeto"->"val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("TEMPData",Seq("TEMP")),("IS_TEMP_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("TEMP" -> "val", "sujeto"->"val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("RESPData",Seq("RESP")),("IS_RESP_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("RESP" -> "val", "sujeto"->"val") )
     }.start()
 
 
-    val consoleOutput = predictions
+    val consoleOutput = finalPred
       .writeStream
       .outputMode("append")
       .format("console")

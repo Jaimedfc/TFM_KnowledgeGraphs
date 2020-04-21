@@ -13,7 +13,7 @@ object Classification{
     val neoURI = "localhost" //dev
     val spark = SparkSession
       .builder
-      .config(Neo4jConfig.prefix + "url", "bolt://"+neoURI)
+      .config(Neo4jConfig.prefix + "url", "bolt://"+neoURI+":7687")
       .config(Neo4jConfig.prefix + "user", "neo4j")
       .config(Neo4jConfig.prefix + "password", "test")
       .appName("StressClassification")
@@ -65,19 +65,12 @@ object Classification{
 
     finalPred.writeStream.foreachBatch{
       (batchDF: DataFrame, batchId: Long) =>
-        Neo4jDataFrame.createNodes(sc,batchDF,("Subject",Seq("sujeto")),Map("sujeto" -> "val"))
-        Neo4jDataFrame.createNodes(sc,batchDF,("ECGData",Seq("ECG")),Map("ECG" -> "val"))
-        Neo4jDataFrame.createNodes(sc,batchDF,("EMGData",Seq("EMG")),Map("EMG" -> "val"))
-        Neo4jDataFrame.createNodes(sc,batchDF,("EDAData",Seq("EDA")),Map("EDA" -> "val"))
-        Neo4jDataFrame.createNodes(sc,batchDF,("TEMPData",Seq("TEMP")),Map("TEMP" -> "val"))
-        Neo4jDataFrame.createNodes(sc,batchDF,("RESPData",Seq("RESP")),Map("RESP" -> "val"))
-        Neo4jDataFrame.createNodes(sc,batchDF,("Status",Seq("label")),Map("label"->"val"))
         Neo4jDataFrame.mergeEdgeList(sc,batchDF,("Subject",Seq("sujeto")),("HAS_STATUS",Seq()),("Status",Seq("label")),Map("sujeto"->"val", "label"->"val") )
-        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("ECGData",Seq("ECG")),("IS_ECG_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("ECG" -> "val", "sujeto"->"val") )
-        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("EMGData",Seq("EMG")),("IS_EMG_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("EMG" -> "val", "sujeto"->"val") )
-        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("EDAData",Seq("EDA")),("IS_EDA_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("EDA" -> "val", "sujeto"->"val") )
-        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("TEMPData",Seq("TEMP")),("IS_TEMP_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("TEMP" -> "val", "sujeto"->"val") )
-        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("RESPData",Seq("RESP")),("IS_RESP_DATA_IN",Seq()),("Subject",Seq("sujeto")),Map("RESP" -> "val", "sujeto"->"val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("ECGData",Seq("ECG")),("IS_ECG_DATA_OF",Seq()),("Subject",Seq("sujeto")),Map("ECG" -> "val", "sujeto"-> "val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("EMGData",Seq("EMG")),("IS_EMG_DATA_OF",Seq()),("Subject",Seq("sujeto")),Map("EMG" -> "val", "sujeto"-> "val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("EDAData",Seq("EDA")),("IS_EDA_DATA_OF",Seq()),("Subject",Seq("sujeto")),Map("EDA" -> "val", "sujeto"-> "val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("TEMPData",Seq("TEMP")),("IS_TEMP_DATA_OF",Seq()),("Subject",Seq("sujeto")),Map("TEMP" -> "val", "sujeto"-> "val") )
+        Neo4jDataFrame.mergeEdgeList(sc,batchDF,("RESPData",Seq("RESP")),("IS_RESP_DATA_OF",Seq()),("Subject",Seq("sujeto")),Map("RESP" -> "val", "sujeto"-> "val") )
     }.start()
 
 

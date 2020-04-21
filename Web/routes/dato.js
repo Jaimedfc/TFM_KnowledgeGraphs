@@ -59,36 +59,34 @@ router.post('/dato', async(req, res) => {
 router.get('/dato/:id', async(req, res) => {
     const _id = req.params.id;
     let urineo = process.env.NEO_URI || 'localhost';
-    urineo = urineo + ':7474'
-    try {
-      //const dato = COGERDENEO4J
-
-      const driver = neo4j.driver(urineo, neo4j.auth.basic('', ''));
-      const session = driver.session();
-
-      try {
-        const result = await session.run(
-          'MATCH (a:Sujeto {value: $val})--[:ISPRODUCEDBY]--(d:Id)--(x) RETURN a AS sujeto, d.value AS id, x AS data',
-          { val: _id }
-        );
-        
-        const singleRecord = result.records[0];
-        const sujeto = singleRecord.get('sujeto');
-        const dataID = singleRecord.get('id');
-        const data = singleRecord.get('data');
-        console.log("SUJETO", sujeto);
-        console.log("DATAID", dataID);
-        console.log("DATA", data);
-      } finally {
-        await session.close();
-      }
-      res.status(200).json({'msg': 'TODO OK', 'dato': _id});
-    } catch (error) {
+    urineo = "neo4j://"+urineo// + ':7687'
+    const driver = neo4j.driver(urineo, neo4j.auth.basic('neo4j', 'test'));
+    const session = driver.session({ defaultAccessMode: neo4j.session.READ });
+    console.log(_id);
+    /*session.readTransaction(tx =>{
+      //tx.run('MATCH p=(n :Subject {val: $value})--(x) RETURN p',{ value: _id })
+      tx.run('MATCH (n) RETURN count(n) as count');
+    })*/
+    session.run('MATCH (n :Subject {val: $value})--(x) RETURN x AS data',{ value: _id })
+    .then(result =>{
+      session.close();
+      let myData = {}
+      result.records.forEach(record => {
+        myData[record.get('data').labels[0]] = record.get('data').properties.val
+      })
+      console.log(myData);
+      myData["Subject"] = _id;
+      res.status(200).json({'msg': 'TODO OK', 'dato': myData});
+      
+    })
+    .catch (err =>{
+      console.log(err);
       return res.status(400).json({
         mensaje: 'Ocurrio un error',
-        error
+        err
       })
-    }
+    })
+    .then(() => driver.close());
   });
 
   // Get con todos los documentos

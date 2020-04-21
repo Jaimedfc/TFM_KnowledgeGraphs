@@ -2,7 +2,7 @@
   <div>
     <b-container>
         <div v-if="dato !== null">
-            <h2>Información de {{dato.datoID}}</h2>
+            <h2>Información de {{dato.Subject}}</h2>
             <ul id="v-for-object">
                 <li v-for="(value, name) in dato" v-bind:key="name">
                     {{ name }}: {{ value }}

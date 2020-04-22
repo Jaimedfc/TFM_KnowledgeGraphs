@@ -17,15 +17,14 @@
 </template>
  
 <script>
-const url = process.env.URL_EXPRESS || "http://localhost:3000";
-const API_URL = url + '/api/dato';
+const url = process.env.VUE_APP_API || "localhost";
+const API_URL = "http://" + url + ':3000/api/dato';
 export default {
   name: "SeeData",
   data: () => ({
     dato: null
   }),
   created: function () {
-    console.log('DATO: ' + this.$route.params.data)
     fetch(API_URL+"/"+this.$route.params.data, {
         method: "GET"
       })
@@ -38,7 +37,6 @@ export default {
               .join(". ");
             this.error = error;
           } else {
-            console.log(result);
             this.dato = result.dato;
           }
         });

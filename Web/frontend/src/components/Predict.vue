@@ -58,8 +58,8 @@
 </template>
  
 <script>
-const url = process.env.VUE_APP_API || "http://localhost:3000";
-const API_URL = url + '/api/dato';
+const url = process.env.VUE_APP_API || "localhost";
+const API_URL = "http://" + url + ':3000/api/dato';
  
 export default {
   name: "Predict",
@@ -96,7 +96,6 @@ export default {
             this.error = error;
           } else {
             this.error = "";
-            console.log(result);
             this.showLink = true;
           }
         });

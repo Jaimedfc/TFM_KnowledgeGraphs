@@ -1,4 +1,3 @@
-//import Vue from 'vue/dist/vue.js'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
@@ -16,9 +15,9 @@ Vue.use(BootstrapVue)
 
 
 const routes = [
-  { path: '/predict', component: Predict, meta: {title: 'Predict - TFM JDFC' }},
-  { path: '/data/:data', component: SeeData , meta: {title: 'LookUp - TFM JDFC' }},
-  { path: '/', component: Home , meta: {title: 'Home - TFM JDFC' }}
+  { path: '/predict', component: Predict},
+  { path: '/data/:data', component: SeeData },
+  { path: '/', component: Home}
 ]
 
 const router = new VueRouter({

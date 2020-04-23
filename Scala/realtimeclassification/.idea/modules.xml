@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Classification.iml" filepath="$PROJECT_DIR$/.idea/modules/Classification.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Classification-build.iml" filepath="$PROJECT_DIR$/.idea/modules/Classification-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/realtimeclassification.iml" filepath="$PROJECT_DIR$/.idea/modules/realtimeclassification.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/realtimeclassification-build.iml" filepath="$PROJECT_DIR$/.idea/modules/realtimeclassification-build.iml" />
     </modules>
   </component>
 </project>

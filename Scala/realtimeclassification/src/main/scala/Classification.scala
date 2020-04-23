@@ -1,26 +1,22 @@
 import org.apache.spark.ml.PipelineModel
-import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions.from_json
 import org.apache.spark.sql.types.{DataTypes, StructType}
-import org.neo4j.spark.Neo4jConfig
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.neo4j.spark.dataframe.Neo4jDataFrame
 object Classification{
 
   def main(args: Array[String]): Unit = {
     println("Classification starting now!")
 
-    //val neoURI = sys.env("NEO_URI") //pro
-    val neoURI = "localhost" //dev
     val spark = SparkSession
       .builder
-      .config(Neo4jConfig.prefix + "url", "bolt://"+neoURI+":7687")
-      .config(Neo4jConfig.prefix + "user", "neo4j")
-      .config(Neo4jConfig.prefix + "password", "test")
+      //.config(Neo4jConfig.prefix + "url", "bolt://"+neoURI+":7687")  PARA DEV EN LOCAL
+      //.config(Neo4jConfig.prefix + "user", "neo4j")
+      //.config(Neo4jConfig.prefix + "password", "test")
       .appName("StressClassification")
       .master("local[*]")
       .getOrCreate()
     val sc = spark.sparkContext
-    //import spark.implicits._
     import spark.implicits._
 
     val base_path= "/media/jaime/tocho/Universidad/Master/TFM/TFM_KnowledgeGraphs"
@@ -28,8 +24,8 @@ object Classification{
     val rfc = PipelineModel.load(randomForestModelPath)
 
     //Kafka time
-    //val kafkaURI = sys.env("KAFKA_URI") //pro
-    val kafkaURI = "localhost" //dev
+    val kafkaURI = sys.env("KAFKA_URI") //pro
+    //val kafkaURI = "localhost" //dev
     val df = spark
       .readStream
       .format("kafka")

@@ -19,17 +19,17 @@ object Classification{
     val sc = spark.sparkContext
     import spark.implicits._
 
-    val base_path= "/media/jaime/tocho/Universidad/Master/TFM/TFM_KnowledgeGraphs"
+    val base_path= "/TFM_KnowledgeGraphs"
     val randomForestModelPath = "%s/Data/pySparkRFModel".format(base_path)
     val rfc = PipelineModel.load(randomForestModelPath)
 
     //Kafka time
     val kafkaURI = sys.env("KAFKA_URI") //pro
-    //val kafkaURI = "localhost" //dev
+    //val kafkaURI = "localhost:9092" //dev
     val df = spark
       .readStream
       .format("kafka")
-      .option("kafka.bootstrap.servers", kafkaURI+":9092")
+      .option("kafka.bootstrap.servers", kafkaURI)
       .option("subscribe", "myTopic")
       .load()
     df.printSchema()

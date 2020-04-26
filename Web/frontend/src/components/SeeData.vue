@@ -17,8 +17,8 @@
 </template>
  
 <script>
-const url = process.env.VUE_APP_API || "localhost";
-const API_URL = "http://" + url + ':3000/api/dato';
+const url = process.env.VUE_APP_API || "localhost:3000";
+const API_URL = "http://" + url + '/api/dato';
 export default {
   name: "SeeData",
   data: () => ({

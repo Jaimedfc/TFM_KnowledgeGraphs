@@ -16,8 +16,7 @@ router.post('/dato', async(req, res) => {
         'sujeto': body.sujeto
     }
     // conf kafka
-    let urlKafka = process.env.KAFKA_URI || 'localhost';
-    urlKafka = urlKafka+':9092';
+    let urlKafka = process.env.KAFKA_URI || 'localhost:9092';
     var client = new kafka.KafkaClient({kafkaHost: urlKafka});
     var producer = new kafka.Producer(client);
     

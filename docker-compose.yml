@@ -42,6 +42,7 @@ services:
       - "3000:3000"
     depends_on:
       - spark
+      - neo
     hostname: web
     environment:
       NEO_URI: neo

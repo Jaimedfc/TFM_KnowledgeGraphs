@@ -55,12 +55,9 @@ router.get('/dato/:id', async(req, res) => {
       })
       myData["Subject"] = _id;
       res.status(200).json({'msg': 'TODO OK', 'dato': myData});
-      session.close();
-      
     })
     .catch (err =>{
       console.log("ERRRRROR",err);
-      session.close();
       return res.status(400).json({
         mensaje: 'Ocurrio un error',
         err

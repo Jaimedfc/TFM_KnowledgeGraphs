@@ -15,8 +15,8 @@ RUN tar -zxvf spark-2.4.5-bin-hadoop2.7.tgz
 ENV SPARK_CLASSPATH ${SPARK_HOME}/jars/*
 ENV PATH $SBT_HOME/bin:$SPARK_HOME/bin:${SPARK_HOME}/jars/*:$PATH
 WORKDIR /
-RUN git clone https://github.com/Jaimedfc/TFM_KnowledgeGraphs && mkdir /TFM_KnowledgeGraphs/Data
-COPY ./Data/pySparkRFModel /TFM_KnowledgeGraphs/Data
+RUN git clone https://github.com/Jaimedfc/TFM_KnowledgeGraphs && mkdir /TFM_KnowledgeGraphs/Data && mkdir /TFM_KnowledgeGraphs/pySparkRFModel
+COPY ./Data/pySparkRFModel /TFM_KnowledgeGraphs/Data/pySparkRFModel
 WORKDIR /TFM_KnowledgeGraphs/Scala/realtimeclassification
 RUN sbt package
 CMD echo "I'm done"

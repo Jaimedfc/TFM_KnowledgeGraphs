@@ -4,73 +4,59 @@ services:
   zookeeper:
     container_name: zookeeper
     image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
+    expose:
+      - "2181"
     hostname: zookeeper
 
 
   kafka:
     container_name: kafka
-    image: wurstmeister/kafka:2.12-2.3.0
-    ports:
-      - "9092:9092"
+    image: wurstmeister/kafka:2.12-2.4.0
+    expose:
+      - "9092"
     depends_on:
       - zookeeper
     hostname: kafka
     environment:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_CREATE_TOPICS: "flight_delay_classification_request:1:1"
+      KAFKA_CREATE_TOPICS: "myTopic:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     
 
-  mongo:
-    container_name: mongo
-    image: mongo
+  neo:
+    container_name: neo
+    image: neo4j
     ports:
-      - "27017:27017"
-    volumes:
-      - ./data:/data/
-    depends_on:
-      - kafka
-    hostname: mongo
+      - "7474:7474"
+      - "7687:7687"
+    hostname: neo
     environment:
-      MONGODB_DATA_DIR: /data/db
-
-  mongo_seed:
-    image: jaimedfc/mongo-seed
-    container_name: mongo_seed
-    depends_on:
-      - mongo
+      NEO4J_AUTH: neo4j/test
     
   web:
     container_name: web
-    image: jaimedfc/my_flask
+    image: jaimedfc/tfmweb
+    restart: always
     ports:
-      - "5000:5000"
-      - "9200:9200"
+      - "3000:3000"
     depends_on:
-      - mongo_seed
       - spark
     hostname: web
     environment:
-      MONGO_URI: mongo
-      KAFKA_URI: kafka
-      FLASK_URI: web
+      NEO_URI: neo
+      KAFKA_URI: kafka:9092
+      VUE_APP_API: web:3000
 
   spark:
-    image: jaimedfc/my_spark
+    image: jaimedfc/tfmspark
     container_name: spark
-    ports:
-      - "7077:7077"
+    expose:
+      - "7077"
     depends_on:
       - kafka
-      - mongo_seed
+      - neo
     hostname: spark
     environment:
-      MONGO_URI: mongo
-      KAFKA_URI: kafka
-
-
-volumes:
-  data:
+      KAFKA_URI: kafka:9092
+    command: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,neo4j-contrib:neo4j-spark-connector:2.4.1-M1 --class Classification --conf spark.neo4j.bolt.url=bolt://neo:7687 --conf spark.neo4j.bolt.user=neo4j --conf spark.neo4j.bolt.password=test /TFM_KnowledgeGraphs/Scala/realtimeclassification/target/scala-2.11/realtimeclassification_2.11-1.0.jar

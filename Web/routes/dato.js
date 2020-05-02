@@ -45,7 +45,6 @@ router.get('/dato/:id', async(req, res) => {
     let urineo = process.env.NEO_URI || 'localhost';
     urineo = "neo4j://"+urineo
     const driver = neo4j.driver(urineo, neo4j.auth.basic('neo4j', 'test'),{
-      encrypted: 'ENCRYPTION_OFF',
       connectionTimeout: 20 * 1000,
       maxConnectionLifetime: 3 * 60 * 60 * 1000, // 3 hours
       maxConnectionPoolSize: 50,

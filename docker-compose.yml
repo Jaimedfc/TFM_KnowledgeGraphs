@@ -27,16 +27,18 @@ services:
   neo:
     container_name: neo
     image: neo4j
+    restart: always
     ports:
       - "7474:7474"
       - "7687:7687"
     expose:
       - "7687"
+      - "7474"
     hostname: neo
     environment:
       NEO4J_AUTH: neo4j/test
-      NEO4J_dbms_connector_bolt_listen__address: :7687
-      NEO4J_dbms_connector_bolt_tls_level: OPTIONAL
+      #NEO4J_dbms_connector_bolt_listen__address: neo:7687
+      #NEO4J_dbms_connector_bolt_tls__level: OPTIONAL
     
   web:
     container_name: web

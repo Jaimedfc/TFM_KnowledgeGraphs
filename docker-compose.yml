@@ -30,9 +30,13 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
+    expose:
+      - "7687"
     hostname: neo
     environment:
       NEO4J_AUTH: neo4j/test
+      NEO4J_dbms_connector_bolt_listen__address: :7687
+      NEO4J_dbms_connector_bolt_tls_level: OPTIONAL
     
   web:
     container_name: web
@@ -45,9 +49,9 @@ services:
       - neo
     hostname: web
     environment:
-      NEO_URI: neo
+      NEO_URI: neo:7687
       KAFKA_URI: kafka:9092
-      VUE_APP_API: web:3000
+      #VUE_APP_API: web:3000
 
   spark:
     image: jaimedfc/tfmspark

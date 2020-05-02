@@ -5,4 +5,4 @@ RUN git clone https://github.com/Jaimedfc/TFM_KnowledgeGraphs
 WORKDIR /TFM_KnowledgeGraphs/Web/
 RUN npm install && npm install --prefix ./frontend
 EXPOSE 3000
-CMD npm run --prefix ./frontend build && npm run devbabel
+CMD npm run build --prefix ./frontend && npm run devbabel

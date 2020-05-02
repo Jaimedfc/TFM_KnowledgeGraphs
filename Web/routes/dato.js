@@ -43,9 +43,9 @@ router.post('/dato', async(req, res) => {
 router.get('/dato/:id', async(req, res) => {
     const _id = req.params.id;
     let urineo = process.env.NEO_URI || 'localhost';
-    urineo = "neo4j://"+urineo
+    urineo = "bolt://"+urineo
     const driver = neo4j.driver(urineo, neo4j.auth.basic('neo4j', 'test'));
-    const session = driver.session({ defaultAccessMode: neo4j.session.READ });
+    const session = driver.session();
     session.run('MATCH (n :Subject {val: $value})--(x) RETURN x AS data',{ value: _id })
     .then(result =>{
       console.log(result);

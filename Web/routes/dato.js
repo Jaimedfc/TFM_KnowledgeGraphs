@@ -43,9 +43,15 @@ router.post('/dato', async(req, res) => {
 router.get('/dato/:id', async(req, res) => {
     const _id = req.params.id;
     let urineo = process.env.NEO_URI || 'localhost';
-    urineo = "bolt://"+urineo
-    const driver = neo4j.driver(urineo, neo4j.auth.basic('neo4j', 'test'));
-    const session = driver.session();
+    urineo = "neo4j://"+urineo
+    const driver = neo4j.driver(urineo, neo4j.auth.basic('neo4j', 'test'),{
+      encrypted: 'ENCRYPTION_OFF',
+      connectionTimeout: 20 * 1000,
+      maxConnectionLifetime: 3 * 60 * 60 * 1000, // 3 hours
+      maxConnectionPoolSize: 50,
+      connectionAcquisitionTimeout: 2 * 60 * 1000 // 120 seconds
+    });
+    const session = driver.session({ defaultAccessMode: neo4j.session.READ });
     session.run('MATCH (n :Subject {val: $value})--(x) RETURN x AS data',{ value: _id })
     .then(result =>{
       console.log(result);

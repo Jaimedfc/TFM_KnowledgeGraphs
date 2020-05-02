@@ -53,16 +53,18 @@ router.get('/dato/:id', async(req, res) => {
     const session = driver.session({ defaultAccessMode: neo4j.session.READ });
     session.run('MATCH (n :Subject {val: $value})--(x) RETURN x AS data',{ value: _id })
     .then(result =>{
+      session.close();
       console.log(result);
       let myData = {}
       result.records.forEach(record => {
         myData[record.get('data').labels[0]] = record.get('data').properties.val
       })
       myData["Subject"] = _id;
-      res.status(200).json({'msg': 'TODO OK', 'dato': myData});
+      return res.status(200).json({'msg': 'TODO OK', 'dato': myData});
     })
     .catch (err =>{
       console.log("ERRRRROR",err);
+      session.close();
       return res.status(400).json({
         mensaje: 'Ocurrio un error',
         err

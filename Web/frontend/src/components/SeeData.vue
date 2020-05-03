@@ -1,16 +1,13 @@
 <template>
   <div>
     <b-container>
-        <div v-if="dato !== null">
+        <div v-if="cond">
             <h2>Información de {{dato.Subject}}</h2>
-            <ul id="v-for-object">
-                <li v-for="(value, name) in dato" v-bind:key="name">
-                    {{ name }}: {{ value }}
-                </li>
-            </ul>
+            <b-table striped hover :items="dato"></b-table>
         </div>
         <div v-else>
             <h2>No se ha especificado ningún dato válido</h2>
+            <p>Si está seguro de que el dato es válido, vuelva a intentarlo tras unos segundos.</p>
         </div>
     </b-container>
   </div>
@@ -40,6 +37,11 @@ export default {
             this.dato = result.dato;
           }
         });
+  },
+  computed:{
+    cond: function () {
+      return this.dato !== null && Object.keys(this.dato).length >= 7;
+    }
   }
 };
 </script>

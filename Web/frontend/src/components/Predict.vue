@@ -124,11 +124,6 @@ export default {
     searchDato(){
       this.$router.push('/data/'+this.dataToSearch);
     }
-  },
-  computed:{
-    resultURL: function () {
-      return "/data/"+this.dato.sujeto;
-    }
   }
 };
 </script>

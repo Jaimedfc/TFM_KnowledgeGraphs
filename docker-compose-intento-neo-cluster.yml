@@ -1,0 +1,127 @@
+version: "3"
+services:
+
+  zookeeper:
+    container_name: zookeeper
+    image: wurstmeister/zookeeper
+    expose:
+      - "2181"
+    hostname: zookeeper
+
+
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka:2.12-2.4.0
+    expose:
+      - "9092"
+    depends_on:
+      - zookeeper
+    hostname: kafka
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CREATE_TOPICS: "myTopic:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    
+
+  core1:
+    image: neo4j:3.5-enterprise
+    container_name: core1
+    hostname: core1
+    ports:
+      - 7477:7477
+      - 6480:6480
+      - 7690:7690
+    environment:
+      - NEO4J_AUTH=neo4j/test
+      - NEO4J_dbms_mode=CORE
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_causal__clustering_minimum__core__cluster__size__at__formation=3
+      - NEO4J_causal__clustering_minimum__core__cluster__size__at__runtime=3
+      - NEO4J_causal__clustering_initial__discovery__members=core1:5000,core2:5000,core3:5000
+      - NEO4J_dbms_connector_http_listen__address=:7477
+      - NEO4J_dbms_connector_https_listen__address=:6480
+      - NEO4J_dbms_connector_bolt_listen__address=:7690
+
+  core2:
+    image: neo4j:3.5-enterprise
+    container_name: core2
+    hostname: core2
+    ports:
+      - 7475:7475
+      - 6478:6478
+      - 7688:7688
+    environment:
+      - NEO4J_AUTH=neo4j/test
+      - NEO4J_dbms_mode=CORE
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_causal__clustering_minimum__core__cluster__size__at__formation=3
+      - NEO4J_causal__clustering_minimum__core__cluster__size__at__runtime=3
+      - NEO4J_causal__clustering_initial__discovery__members=core1:5000,core2:5000,core3:5000
+      - NEO4J_dbms_connector_http_listen__address=:7475
+      - NEO4J_dbms_connector_https_listen__address=:6478
+      - NEO4J_dbms_connector_bolt_listen__address=:7688
+
+  core3:
+    image: neo4j:3.5-enterprise
+    container_name: core3
+    hostname: core3
+    ports:
+      - 7476:7476
+      - 6479:6479
+      - 7689:7689
+    environment:
+      - NEO4J_AUTH=neo4j/test
+      - NEO4J_dbms_mode=CORE
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_causal__clustering_minimum__core__cluster__size__at__formation=3
+      - NEO4J_causal__clustering_minimum__core__cluster__size__at__runtime=3
+      - NEO4J_causal__clustering_initial__discovery__members=core1:5000,core2:5000,core3:5000
+      - NEO4J_dbms_connector_http_listen__address=:7476
+      - NEO4J_dbms_connector_https_listen__address=:6479
+      - NEO4J_dbms_connector_bolt_listen__address=:7689
+
+  neo:
+    image: neo4j:3.5-enterprise
+    container_name: neo
+    ports:
+      - 7474:7474
+      - 6477:6477
+      - 7687:7687
+    hostname: neo
+    environment:
+      - NEO4J_AUTH=neo4j/test
+      - NEO4J_dbms_mode=READ_REPLICA
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_causalClustering_initialDiscoveryMembers=core1:5000,core2:5000,core3:5000
+      - NEO4J_dbms_connector_http_listen__address=:7474
+      - NEO4J_dbms_connector_https_listen__address=:6477
+      - NEO4J_dbms_connector_bolt_listen__address=:7687
+    
+  web:
+    container_name: web
+    image: jaimedfc/tfmweb
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - spark
+      - neo
+    hostname: web
+    environment:
+      NEO_URI: neo:7687
+      KAFKA_URI: kafka:9092
+      #VUE_APP_API: web:3000
+
+  spark:
+    image: jaimedfc/tfmspark
+    container_name: spark
+    expose:
+      - "7077"
+    depends_on:
+      - kafka
+      - neo
+    hostname: spark
+    environment:
+      KAFKA_URI: kafka:9092
+    command: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,neo4j-contrib:neo4j-spark-connector:2.4.1-M1 --class Classification --conf spark.neo4j.bolt.url=bolt://neo:7687 --conf spark.neo4j.bolt.user=neo4j --conf spark.neo4j.bolt.password=test /TFM_KnowledgeGraphs/Scala/realtimeclassification/target/scala-2.11/realtimeclassification_2.11-1.0.jar

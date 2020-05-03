@@ -2,7 +2,7 @@
   <div>
     <b-container>
         <div v-if="cond">
-            <h2>Información de {{dato.Subject}}</h2>
+            <h2>Información de {{dato.Sujeto}}</h2>
             <b-table striped hover :items="dato"></b-table>
         </div>
         <div v-else>
@@ -19,7 +19,15 @@ const API_URL = "http://" + url + '/api/dato';
 export default {
   name: "SeeData",
   data: () => ({
-    dato: null
+    dato: {
+      Sujeto: "",
+      datoECG: "",
+      datoEMG: "",
+      datoEDA: "",
+      datoTEMP: "",
+      datoRESP: "",
+      Estado: ""
+    }
   }),
   created: function () {
     fetch(API_URL+"/"+this.$route.params.data, {
@@ -34,13 +42,20 @@ export default {
               .join(". ");
             this.error = error;
           } else {
-            this.dato = result.dato;
+            this.dato.Sujeto = result.dato.Subject;
+            this.dato.datoECG = result.dato.ECGData;
+            this.dato.datoEMG = result.dato.EMGData;
+            this.dato.datoEDA = result.dato.EDAData;
+            this.dato.datoTEMP = result.dato.TEMPData;
+            this.dato.datoRESP = result.dato.RESPData;
+            this.dato.Estado = result.dato.Status;
           }
         });
   },
   computed:{
     cond: function () {
-      return this.dato !== null && Object.keys(this.dato).length >= 7;
+      return this.dato.Sujeto.length >0 && this.dato.DatoECG.length >0 && this.dato.DatoEMG.length >0
+       && this.dato.DatoEDA.length >0 && this.dato.DatoTEMP.length >0 && this.dato.DatoRESP.length >0 && this.dato.Estado.length >0;
     }
   }
 };

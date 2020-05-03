@@ -1,6 +1,20 @@
 <template>
   <div>
     <b-container fluid class='text-left'>
+      <b-form @submit.prevent="searchDato" class='left-align'>
+        <b-form-group label='Sujeto a buscar:' label-for="dataToSearch" description="Se recomienda esperar unos segundos tras rellenar el formulario inferior para buscar datos.">
+        <b-form-input
+          v-model="dataToSearch"
+          type="text"
+          id="dataToSearch"
+          required></b-form-input>
+      </b-form-group>
+      <b-row fluid align-h="around">
+        <b-button type="submit" variant="primary">Buscar datos</b-button>
+      </b-row>
+      </b-form>
+    </b-container>
+    <b-container fluid class='text-left'>
     <h2>Por favor, rellene el siguiente formulario:</h2>
     <b-form @submit.prevent="addDato" @reset.prevent="onReset" class='left-align'>
       <b-form-group label='Sujeto:' label-for="sujeto" description="Introducir un valor anonimizado. Ej. 'S15'">
@@ -50,9 +64,7 @@
         <h4 class="alert-heading">Error!</h4>
         <p class="mb-0">{{error}}</p>
     </div>
-    <b-row v-if="showLink">
-        <h4><b-link v-bind:to="resultURL">Ver resultado del sujeto {{dato.sujeto}}</b-link></h4>
-      </b-row>
+    <b-row id='spacer'></b-row>
     </b-container>
   </div>
 </template>
@@ -73,7 +85,7 @@ export default {
       TEMP: "",
       RESP: ""
     },
-    showLink: false
+    dataToSearch: ""
   }),
   
   methods: {
@@ -108,8 +120,10 @@ export default {
         this.dato.EDA = '';
         this.dato.TEMP = '';
         this.dato.RESP = '';
-        this.showLink = false;
-      }
+      },
+    searchDato(){
+      this.$router.push('/data/'+this.dataToSearch);
+    }
   },
   computed:{
     resultURL: function () {
@@ -120,5 +134,7 @@ export default {
 </script>
  
 <style>
-
+#spacer{
+  height: 50px;
+}
 </style>

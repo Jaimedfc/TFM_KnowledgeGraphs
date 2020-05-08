@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.service.expose: "true"
+    kompose.service.type: loadbalancer
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: web
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.service.expose: "true"
+        kompose.service.type: loadbalancer
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: web
+    spec:
+      containers:
+      - env:
+        - name: KAFKA_URI
+          value: kafka.my-app.svc.cluster.local:9092
+        - name: NEO_URI
+          value: neo.my-app.svc.cluster.local:7687
+        image: jaimedfc/tfmweb
+        imagePullPolicy: ""
+        name: web
+        ports:
+        - containerPort: 3000
+        resources: {}
+      hostname: web
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

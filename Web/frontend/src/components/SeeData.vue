@@ -3,7 +3,7 @@
     <b-container>
         <div v-if="cond">
             <h2>Información de {{dato.Sujeto}}</h2>
-            <b-table striped hover :items="[this.dato]"></b-table>
+            <b-table striped hover :items="arr"></b-table>
         </div>
         <div v-else>
             <h2>No se ha especificado ningún dato válido</h2>
@@ -56,6 +56,9 @@ export default {
     cond: function () {
       return this.dato.Sujeto.length >0 && this.dato.datoECG.length >0 && this.dato.datoEMG.length >0
        && this.dato.datoEDA.length >0 && this.dato.datoTEMP.length >0 && this.dato.datoRESP.length >0 && this.dato.Estado.length >0;
+    },
+    arr: function () {
+      return [this.dato];
     }
   }
 };

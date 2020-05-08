@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: neo
+  name: neo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: neo
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: neo
+    spec:
+      containers:
+      - env:
+        - name: NEO4J_PASSWORD
+          value: test
+        image: bitnami/neo4j:4
+        imagePullPolicy: ""
+        name: neo
+        ports:
+        - containerPort: 7474
+        - containerPort: 7687
+        - containerPort: 7473
+        resources: {}
+      hostname: neo
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: spark
+  name: spark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: spark
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: spark
+    spec:
+      containers:
+      - args:
+        - spark-submit
+        - --packages
+        - org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,neo4j-contrib:neo4j-spark-connector:2.4.1-M1
+        - --class
+        - Classification
+        - --conf
+        - spark.neo4j.bolt.url=bolt://neo.my-app.svc.cluster.local:7687
+        - --conf
+        - spark.neo4j.bolt.user=neo4j
+        - --conf
+        - spark.neo4j.bolt.password=test
+        - /TFM_KnowledgeGraphs/Scala/realtimeclassification/target/scala-2.11/realtimeclassification_2.11-1.0.jar
+        env:
+        - name: KAFKA_URI
+          value: kafka.my-app.svc.cluster.local:9092
+        image: jaimedfc/tfmspark
+        imagePullPolicy: ""
+        name: spark
+        ports:
+        - containerPort: 7077
+        resources: {}
+      hostname: spark
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

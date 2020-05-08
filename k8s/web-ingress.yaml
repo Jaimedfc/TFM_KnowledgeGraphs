@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: web
+          servicePort: 3000
+status:
+  loadBalancer: {}

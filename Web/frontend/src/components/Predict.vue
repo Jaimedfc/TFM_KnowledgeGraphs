@@ -65,6 +65,9 @@
         <p class="mb-0">{{error}}</p>
     </div>
     <b-row id='spacer'></b-row>
+    <div v-if="error" class="alert alert-dismissible alert-warning">
+      <h3>¡Dato Enviado!</h3>
+    </div>
     </b-container>
   </div>
 </template>
@@ -85,6 +88,7 @@ export default {
       TEMP: "",
       RESP: ""
     },
+    sent: false,
     dataToSearch: ""
   }),
   
@@ -108,7 +112,7 @@ export default {
             this.error = error;
           } else {
             this.error = "";
-            this.showLink = true;
+            this.sent = true;
           }
         });
     },
@@ -120,6 +124,7 @@ export default {
         this.dato.EDA = '';
         this.dato.TEMP = '';
         this.dato.RESP = '';
+        this.sent = false;
       },
     searchDato(){
       this.$router.push('/data/'+this.dataToSearch);

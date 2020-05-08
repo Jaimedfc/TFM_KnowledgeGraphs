@@ -1,0 +1,68 @@
+version: "3"
+services:
+
+  zookeeper:
+    container_name: zookeeper
+    image: wurstmeister/zookeeper
+    expose:
+      - "2181"
+    hostname: zookeeper
+
+
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka:2.12-2.4.0
+    expose:
+      - "9092"
+    depends_on:
+      - zookeeper
+    hostname: kafka
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CREATE_TOPICS: "myTopic:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    
+
+  neo:
+    container_name: neo
+    image: bitnami/neo4j:4
+    restart: always
+    expose:
+      - "7474"
+      - "7687"
+      - "7473"
+    hostname: neo
+    environment:
+      NEO4J_PASSWORD: test
+    
+  web:
+    container_name: web
+    image: jaimedfc/tfmweb
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - spark
+      - neo
+    hostname: web
+    environment:
+      NEO_URI: neo:7687
+      KAFKA_URI: kafka:9092
+      #VUE_APP_API: web:3000
+    labels:
+      kompose.service.expose: "true"
+      kompose.service.type: loadbalancer
+
+  spark:
+    image: jaimedfc/tfmspark
+    container_name: spark
+    expose:
+      - "7077"
+    depends_on:
+      - kafka
+      - neo
+    hostname: spark
+    environment:
+      KAFKA_URI: kafka:9092
+    command: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,neo4j-contrib:neo4j-spark-connector:2.4.1-M1 --class Classification --conf spark.neo4j.bolt.url=bolt://neo:7687 --conf spark.neo4j.bolt.user=neo4j --conf spark.neo4j.bolt.password=test /TFM_KnowledgeGraphs/Scala/realtimeclassification/target/scala-2.11/realtimeclassification_2.11-1.0.jar

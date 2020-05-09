@@ -65,7 +65,7 @@
         <p class="mb-0">{{error}}</p>
     </div>
     <b-row id='spacer'></b-row>
-    <div v-if="error" class="alert alert-dismissible alert-warning">
+    <div v-if="sent" class="alert alert-dismissible alert-warning">
       <h3>¡Dato Enviado!</h3>
     </div>
     </b-container>

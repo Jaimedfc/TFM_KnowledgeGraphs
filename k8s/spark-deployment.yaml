@@ -31,7 +31,7 @@ spec:
         - --class
         - Classification
         - --conf
-        - spark.neo4j.bolt.url=bolt://neo.my-app.svc.cluster.local:7687
+        - spark.neo4j.bolt.url=bolt://neo:7687
         - --conf
         - spark.neo4j.bolt.user=neo4j
         - --conf
@@ -39,7 +39,7 @@ spec:
         - /TFM_KnowledgeGraphs/Scala/realtimeclassification/target/scala-2.11/realtimeclassification_2.11-1.0.jar
         env:
         - name: KAFKA_URI
-          value: kafka.my-app.svc.cluster.local:9092
+          value: kafka:9092
         image: jaimedfc/tfmspark
         imagePullPolicy: ""
         name: spark

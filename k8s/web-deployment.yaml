@@ -30,9 +30,11 @@ spec:
       containers:
       - env:
         - name: KAFKA_URI
-          value: kafka.my-app.svc.cluster.local:9092
+          value: kafka:9092
         - name: NEO_URI
-          value: neo.my-app.svc.cluster.local:7687
+          value: neo:7687
+        - name: VUE_APP_API
+          value: web:3000
         image: jaimedfc/tfmweb
         imagePullPolicy: ""
         name: web

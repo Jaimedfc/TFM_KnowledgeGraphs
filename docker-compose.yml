@@ -28,10 +28,10 @@ services:
     container_name: neo
     image: bitnami/neo4j:4
     restart: always
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-      - "7473:7473"
+    expose:
+      - "7474"
+      - "7687"
+      - "7473"
     hostname: neo
     environment:
       NEO4J_PASSWORD: test
@@ -41,7 +41,7 @@ services:
     image: jaimedfc/tfmweb
     restart: always
     ports:
-      - "3000:3000"
+      - "80:3000"
     depends_on:
       - spark
       - neo
@@ -49,7 +49,7 @@ services:
     environment:
       NEO_URI: neo:7687
       KAFKA_URI: kafka:9092
-      #VUE_APP_API: web:3000
+      VUE_APP_API: web:3000
 
   spark:
     image: jaimedfc/tfmspark

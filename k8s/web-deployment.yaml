@@ -34,7 +34,7 @@ spec:
         - name: NEO_URI
           value: neo:7687
         - name: VUE_APP_API
-          value: web:3000
+          value: web:80
         image: jaimedfc/tfmweb
         imagePullPolicy: ""
         name: web

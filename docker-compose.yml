@@ -42,6 +42,8 @@ services:
     restart: always
     ports:
       - "80:3000"
+    expose:
+      - "3000"
     depends_on:
       - spark
       - neo
@@ -49,7 +51,7 @@ services:
     environment:
       NEO_URI: neo:7687
       KAFKA_URI: kafka:9092
-      VUE_APP_API: web:3000
+      VUE_APP_API: localhost:80
 
   spark:
     image: jaimedfc/tfmspark

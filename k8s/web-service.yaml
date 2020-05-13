@@ -1,21 +1,38 @@
 apiVersion: v1
+#kind: Service
+#metadata:
+#  annotations:
+#    kompose.cmd: kompose convert
+#    kompose.service.expose: "true"
+#    kompose.service.type: nodeport
+#    kompose.version: 1.21.0 (992df58d8)
+#  creationTimestamp: null
+#  labels:
+#    io.kompose.service: web
+#  name: web
+#spec:
+#  type: LoadBalancer
+#  ports:
+#  - name: "3000"
+#    port: 3000
+#    targetPort: 3000
+#  selector:
+#    io.kompose.service: web
+#status:
+#  loadBalancer: {}
+
+apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.service.expose: "true"
-    kompose.service.type: loadbalancer
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
   labels:
     io.kompose.service: web
   name: web
 spec:
+  type: NodePort
   ports:
-  - name: "3000"
-    port: 80
-    targetPort: 3000
+    - port: 3000 # Inside the cluster, what port does the service expose?
+      targetPort: 3000 # Which port do pods selected by this service expose?
+    # Which port on the node is the service available through?
+      nodePort: 31234
   selector:
     io.kompose.service: web
-status:
-  loadBalancer: {}

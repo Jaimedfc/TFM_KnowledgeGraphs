@@ -29,6 +29,10 @@ spec:
     spec:
       containers:
       - env:
+        - name: SO_KEEPALIVE
+          value: "1"
+        - name: TCP_KEEPIDLE
+          value: "600"
         - name: KAFKA_URI
           value: kafka:9092
         - name: NEO_URI
@@ -38,7 +42,7 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         - name: VUE_APP_API
-          value: 192.168.99.117:31234
+          value: 192.168.99.119:31234
         image: jaimedfc/tfmweb
         imagePullPolicy: ""
         name: web

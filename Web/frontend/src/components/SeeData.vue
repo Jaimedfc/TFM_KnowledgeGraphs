@@ -54,8 +54,8 @@ export default {
   },
   computed:{
     cond: function () {
-      return this.dato.Sujeto.length >0 && this.dato.datoECG===undefined && this.dato.datoEMG===undefined
-       && this.dato.datoEDA===undefined && this.dato.datoTEMP===undefined && this.dato.datoRESP===undefined && this.dato.Estado===undefined;
+      return this.dato.datoECG !==undefined && this.dato.datoEMG!==undefined
+       && this.dato.datoEDA!==undefined && this.dato.datoTEMP!==undefined && this.dato.datoRESP!==undefined && this.dato.Estado!==undefined;
     },
     arr: function () {
       return [this.dato];

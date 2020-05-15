@@ -9,11 +9,11 @@ metadata:
     io.kompose.service: spark
   name: spark
 spec:
+  type: NodePort
   ports:
-  - name: "7077"
+  - name: spark-port
     port: 7077
     targetPort: 7077
+    nodePort: 30077
   selector:
     io.kompose.service: spark
-status:
-  loadBalancer: {}

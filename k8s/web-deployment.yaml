@@ -27,6 +27,7 @@ spec:
       labels:
         io.kompose.service: web
     spec:
+      priorityClassName: low-priority
       containers:
       - env:
         - name: SO_KEEPALIVE
@@ -34,15 +35,11 @@ spec:
         - name: TCP_KEEPIDLE
           value: "600"
         - name: KAFKA_URI
-          value: kafka:9092
+          value: 192.168.99.120:30092
         - name: NEO_URI
-          value: neo:7687
-        - name: MY_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+          value: 192.168.99.120:30687
         - name: VUE_APP_API
-          value: 192.168.99.119:31234
+          value: 192.168.99.120:31234
         image: jaimedfc/tfmweb
         imagePullPolicy: ""
         name: web

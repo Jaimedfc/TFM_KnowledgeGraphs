@@ -23,16 +23,25 @@ spec:
       labels:
         io.kompose.service: kafka
     spec:
+      priorityClassName: medium-priority
       containers:
       - env:
         - name: KAFKA_ADVERTISED_LISTENERS
           value: PLAINTEXT://kafka:9092
-        - name: KAFKA_CREATE_TOPICS
-          value: myTopic:1:1
+        - name: KAFKA_ADVERTISED_HOST_NAME
+          value: "192.168.99.120"
         - name: KAFKA_LISTENERS
           value: PLAINTEXT://kafka:9092
+        - name: KAFKA_ADVERTISED_PORT
+          value: "30092"
+        - name: KAFKA_BROKER_ID
+          value: "1"
         - name: KAFKA_ZOOKEEPER_CONNECT
-          value: zookeeper:2181
+          value: 192.168.99.120:30181
+        - name: KAFKA_CREATE_TOPICS
+          value: "myTopic:1:1"
+        - name: KAFKA_PORT
+          value: "9092"
         image: wurstmeister/kafka:2.12-2.4.0
         imagePullPolicy: ""
         name: kafka

@@ -9,17 +9,19 @@ metadata:
     io.kompose.service: neo
   name: neo
 spec:
+  type: NodePort
   ports:
-  - name: "7474"
+  - name: neo-port-http
     port: 7474
     targetPort: 7474
-  - name: "7687"
+    nodePort: 30474
+  - name: neo-port-bolt
     port: 7687
     targetPort: 7687
-  - name: "7473"
+    nodePort: 30687
+  - name: neo-port-https
     port: 7473
+    nodePort: 30473
     targetPort: 7473
   selector:
     io.kompose.service: neo
-status:
-  loadBalancer: {}

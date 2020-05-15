@@ -23,6 +23,7 @@ spec:
       labels:
         io.kompose.service: zookeeper
     spec:
+      priorityClassName: high-priority
       containers:
       - image: wurstmeister/zookeeper
         imagePullPolicy: ""

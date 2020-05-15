@@ -30,7 +30,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3000 # Inside the cluster, what port does the service expose?
+    - name: web-port
+      port: 3000 # Inside the cluster, what port does the service expose?
       targetPort: 3000 # Which port do pods selected by this service expose?
     # Which port on the node is the service available through?
       nodePort: 31234

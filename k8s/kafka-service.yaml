@@ -9,11 +9,11 @@ metadata:
     io.kompose.service: kafka
   name: kafka
 spec:
+  type: NodePort
   ports:
-  - name: "9092"
+  - name: kafka-port
     port: 9092
+    nodePort: 30092
     targetPort: 9092
   selector:
     io.kompose.service: kafka
-status:
-  loadBalancer: {}

@@ -23,6 +23,7 @@ spec:
       labels:
         io.kompose.service: neo
     spec:
+      priorityClassName: medium-priority
       containers:
       - env:
         - name: NEO4J_PASSWORD

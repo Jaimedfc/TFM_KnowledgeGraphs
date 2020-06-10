@@ -32,6 +32,8 @@ services:
       - "7474"
       - "7687"
       - "7473"
+    ports:
+      - "7687:7687"
     hostname: neo
     environment:
       NEO4J_PASSWORD: test

@@ -4,3 +4,5 @@ pyspark
 tensorflow>=1.14.0,<2.0
 ampligraph
 xgboost
+sklearn
+sklearn2pmml

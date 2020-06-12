@@ -1,0 +1,5 @@
+numpy
+pandas
+pyspark
+tensorflow>=1.14.0,<2.0
+ampligraph

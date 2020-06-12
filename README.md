@@ -49,8 +49,8 @@ Se usa Docker para lanzar un contenedor con Neo4j, mapeando los puertos necesari
 ``` docker run -p7474:7474 -p7687:7687 -v $HOME/neo4j/data:/pruebas --env=NEO4J_AUTH=neo4j/test --rm  neo4j:latest ```
 
 Se compila el proyecto de Spark usando sbt, modificando el fichero Classification.scala:
-En la línea 22 hay que poner la ruta absoluta al proyecto.
-Comentar la línea 27 y descomentar la 28.
+* En la línea 22 hay que poner la ruta absoluta al proyecto.
+* Comentar la línea 27 y descomentar la 28.
 
 ``` cd /TFM_KnowledgeGraphs/Scala/realtimeclassification && sbt package ```
 
@@ -70,7 +70,7 @@ Por último, se lanza el frontend, para ello, se instala las dependencias necesa
 Ya se puede uno conectar a [http://localhost:3000](http://localhost:3000) y probar el servicio.
 
 ## Lanzar servicio usando docker-compose
-Se necesita instalar la herramienta docker-compose y ejecutar lo siguiente estado en /TFM_KnowledgeGraphs:
+Se necesita instalar la herramienta docker-compose y ejecutar lo siguiente estando en /TFM_KnowledgeGraphs:
 
 ``` docker-compose up ```
 

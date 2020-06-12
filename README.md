@@ -114,6 +114,6 @@ Es posible que si el dashboard no funciona o tarda demasiado el obtener un link 
 ```
 
 ## Tras poblar el grafo...
-Una vez se ha usado el servicio, se pueden hacer cálculos con el grafo que se ha generado en Neo4J. Todos el código necesario se puede encontrar en  /TFM_KnowledgeGraphs/Python.
+Una vez se ha usado el servicio, se pueden hacer cálculos con el grafo que se ha generado en Neo4J. Todo el código necesario se puede encontrar en  /TFM_KnowledgeGraphs/Python.
 
 _Nota: No se recomienda lanzar los scripts sin antes revisarlos. Hay que adaptarlos a cada situación._

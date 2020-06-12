@@ -90,3 +90,18 @@ print("Hits@100: %.2f" % (hits_100))
 hits_1000 = hits_at_n_score(ranks, n=1000)
 print("Hits@1000: %.2f" % (hits_1000))
 
+@misc{ampligraph,
+ author= {Luca Costabello and
+          Sumit Pai and
+          Chan Le Van and
+          Rory McGrath and
+          Nicholas McCarthy and
+          Pedro Tabacof},
+ title = {{AmpliGraph: a Library for Representation Learning on Knowledge Graphs}},
+ month = mar,
+ year  = 2019,
+ doi   = {10.5281/zenodo.2595043},
+ url   = {https://doi.org/10.5281/zenodo.2595043}
+}
+
+

@@ -96,7 +96,9 @@ Lanzado el nodo, se puede usar un dashboard que proporciona minikube para contro
 
 ``` minikube dashboard ```
 
-Ahora, solo resta indicar los ficheros yaml que contienen todo el proyecto:
+Ahora, solo resta indicar los ficheros yaml que contienen todo el proyecto, modificando los ficheros deployment. Ejecutar
+``` minikube ip ```
+para obtener al ip del nodo y cambiar todas las IPs de los deployments por esta ip. Ahora hay que ejecutar:
 
 ``` 
     cd k8s

@@ -1,15 +1,14 @@
 import csv
-import numpy as np
 import pandas as pd
 from ampligraph.utils import restore_model
-
+# Leer datasets y modelos
 df = pd.read_pickle("../Data/reducedDataset001.pkl")
 df["train"] = df.Sujeto > "S14"
 model = restore_model("../Data/KGEmbedModel004.pkl")
 df["data_id"] = df.index.values.astype(str)
 df["data_id"] = "Dato" + df.data_id
 df["subject_id"] = df.Sujeto.values.astype(str)
-
+#Crear diccionario a guardar
 data = (df.data_id).unique()
 data_embeddings = dict(zip(data, model.get_embeddings(data)))
 #encodedNumpyData = json.dumps(data_embeddings, cls=NumpyArrayEncoder)

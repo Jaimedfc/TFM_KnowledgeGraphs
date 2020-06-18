@@ -1,5 +1,6 @@
 import pandas as pd
-datasetS2 = pd.read_pickle("/media/jaime/tocho/Universidad/Master/TFM/WESAD/S2/S2.pkl")
+datasetS2 = pd.read_pickle("/media/jaime/tocho/Universidad/Master/TFM/WESAD/S2/S2.pkl") #Leer dataset en crudo
+#Elegir campos a guardar----EMG,EDA,ECG,Temp,Resp---
 emgS2 = datasetS2["signal"]["chest"]["EMG"]
 emgDatasetS2=pd.DataFrame(emgS2,columns=["EMG"])
 ecgS2 = datasetS2["signal"]["chest"]["ECG"]
@@ -10,13 +11,15 @@ edaS2 = datasetS2["signal"]["chest"]["EDA"]
 edaDatasetS2=pd.DataFrame(edaS2,columns=["EDA"])
 respS2 = datasetS2["signal"]["chest"]["Resp"]
 respDatasetS2=pd.DataFrame(respS2,columns=["RESP"])
-labelS2 = datasetS2["label"]
+labelS2 = datasetS2["label"] #Dataset con los estados de los sujetos
 labelDatasetS2=pd.DataFrame(labelS2,columns=["label"])
-dataChestS2=pd.concat([ecgDatasetS2, emgDatasetS2, edaDatasetS2, tempDatasetS2, respDatasetS2, labelDatasetS2], axis=1)
+dataChestS2=pd.concat([ecgDatasetS2, emgDatasetS2, edaDatasetS2, tempDatasetS2, respDatasetS2, labelDatasetS2], axis=1) #Join de los datasets
+#Eliminar estados inútiles quedando 1-2-3-4
 dataChestCleanS2 = dataChestS2.loc[dataChestS2["label"]>0]
 dataChestCleanS2 = dataChestCleanS2.loc[dataChestCleanS2["label"]<5]
-dataChestCleanS2["Sujeto"] = "S2"
-dataChestCleanS2 = dataChestCleanS2.reindex(columns=['ECG','EMG','EDA','TEMP','RESP','Sujeto', 'label'])
+dataChestCleanS2["Sujeto"] = "S2" #Columna indicando el sujeto
+dataChestCleanS2 = dataChestCleanS2.reindex(columns=['ECG','EMG','EDA','TEMP','RESP','Sujeto', 'label']) #Reindentado del dataset
+#Repetir con el resto de datasets
 datasetS3 = pd.read_pickle("/media/jaime/tocho/Universidad/Master/TFM/WESAD/S3/S3.pkl")
 emgS3 = datasetS3["signal"]["chest"]["EMG"]
 emgDatasetS3=pd.DataFrame(emgS3,columns=["EMG"])

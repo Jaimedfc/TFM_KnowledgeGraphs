@@ -1,10 +1,10 @@
-from ampligraph.datasets import load_wn18
 from ampligraph.latent_features import ComplEx
 from ampligraph.evaluation import select_best_model_ranking
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+# Leer dataset
 df = pd.read_pickle("../Data/reducedDataset001.pkl")
 
 df["train"] = df.Sujeto > "S14"
@@ -13,6 +13,7 @@ df["data_id"] = df.index.values.astype(str)
 df["data_id"] = "Dato" + df.data_id
 df["subject_id"] = df.Sujeto.values.astype(str)
 
+# Generar representacion de un grafo
 triples = []
 for _, row in df[df["train"]].iterrows():
     # Data info
@@ -24,16 +25,6 @@ for _, row in df[df["train"]].iterrows():
     temp_triple = (round(row["TEMP"], 2), "isTEMPDataIn", row["data_id"])
     resp_triple = (round(row["RESP"], 2), "isRESPDataIn", row["data_id"])
 
-    # Stress results
-    # if row["label"] == 1:
-    #    label_triple = (row["data_id"], "ShowsAStateOf", "Baseline")
-    # elif row["label"] == 2:
-    #    label_triple = (row["data_id"], "ShowsAStateOf", "Stress")
-    # elif row["label"] == 3:
-    #    label_triple = (row["data_id"], "ShowsAStateOf", "Amusement")
-    # elif row["label"] == 4:
-    #    label_triple = (row["data_id"], "ShowsAStateOf", "Meditaion")
-
     suj_triple = (row["data_id"], "isProducedBy", row["subject_id"])
 
     triples.extend((ecg_triple, emg_triple, eda_triple, temp_triple,
@@ -43,6 +34,7 @@ X = pd.DataFrame(triples, columns=["subject", "predicate", "object"])
 
 X_train, X_valid_aux = train_test_split(np.array(triples), test_size=0.33)
 X_test, X_valid = train_test_split(X_valid_aux, test_size=0.4)
+# Definir modelo e hiperparámetros a optimizar
 model_class = ComplEx
 param_grid = {
                      "batches_count": [50],

@@ -3,5 +3,5 @@ import pandas as pd
 
 df = pd.read_pickle("../Data/cleanDataset.pkl")
 
-unused, df = train_test_split(df, test_size=0.001)
+unused, df = train_test_split(df, test_size=0.001) #Reducir dataset quedando TamañoOriginal*0.001 filas
 df.to_csv("../Data/reducedDataset001.csv", index = False)
